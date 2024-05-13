@@ -25,8 +25,8 @@ print()
 
 
 
-Hard Level - Order of characters randomised:
-e.g. 4 letter, 2 symbol, 2 number = g^2jk8&P
+#Hard Level - Order of characters randomised:
+#e.g. 4 letter, 2 symbol, 2 number = g^2jk8&P
 password_list = []
 for n in range (0, nr_letters):
   password_list.append(random.choice(letters))
