@@ -39,7 +39,7 @@ def calculator():
       num1 = answer
     else:
       should_continue = False
-    
+      calculator()
 
 
 calculator()
