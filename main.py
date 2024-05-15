@@ -18,7 +18,15 @@
 ## The computer is the dealer.
 
 ##################### Hints #####################
+import random
+from art import logo
+from replit import clear
+import emoji
 
+
+
+
+    
 #Hint 1: Go to this website and try out the Blackjack game: 
 #   https://games.washingtonpost.com/games/blackjack/
 #Then try out the completed Blackjack project here: 
@@ -34,14 +42,37 @@
 #Hint 4: Create a deal_card() function that uses the List below to *return* a random card.
 #11 is the Ace.
 #cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
-
+def deal_card():
+  cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10]
+  card = random.choice(cards)
+  return card
 #Hint 5: Deal the user and computer 2 cards each using deal_card() and append().
 #user_cards = []
 #computer_cards = []
+# def initialize_game():
+#   user_cards = []
+#   while len(user_cards) < 2:
+#     user_cards.append(deal_card())
+  
+#   computer_cards = []
+#   while len(computer_cards) < 2:
+#     computer_cards.append(deal_card())
+
 
 #Hint 6: Create a function called calculate_score() that takes a List of cards as input 
 #and returns the score. 
 #Look up the sum() function to help you do this.
+
+def calculate_score(cards):
+  if sum(cards) == 21 and len(cards) == 2:
+    return 0
+  elif 11 in cards and sum(cards) > 21:
+    cards.remove(11)
+    cards.append(1)
+  return sum(cards)
+    
+
+  
 
 #Hint 7: Inside calculate_score() check for a blackjack (a hand with only 2 cards: ace + 10) and return 0 instead of the actual score. 0 will represent a blackjack in our game.
 
@@ -49,6 +80,77 @@
 
 #Hint 9: Call calculate_score(). If the computer or the user has a blackjack (0) or if the user's score is over 21, then the game ends.
 
+def compare(user_score, computer_score):
+
+  if user_score == computer_score:
+    return "Draw \N{money-mouth face}"
+  elif computer_score == 0:
+    return "User win with a blackjack \N{grinning face}."
+  elif user_score == 0:
+    return "Computer win with a Blackjack \N{zipper-mouth face}."
+  elif user_score > 21:
+    return "Your went over. You lose \N{upside-down face}."
+  elif computer_score > 21:
+    return "Computer went over. Computer lose \N{grinning face}."
+  elif user_score > computer_score:
+    return "User win \N{slightly smiling face}"  
+  else:
+    return "Computer win \N{face with tears of joy}	"
+
+ 
+
+def play_game():
+  print(logo)
+  stop = False
+  user_cards = []
+  computer_cards = []
+  for _ in range(2):
+    user_cards.append(deal_card())
+    computer_cards.append(deal_card()) 
+    #loop game until user stop
+  while stop is False:
+    
+    user_score = calculate_score(user_cards)
+    computer_score = calculate_score(computer_cards)
+    print(f"Your cards: {user_cards}, current score: {user_score}\nComputer's first card: {computer_cards[0]}")
+    draw = input("    Type 'y' to get another card, type 'n' to pass: ").lower()
+    #append card to user_cards
+    if draw == "y":
+      user_cards.append(deal_card())
+      user_score = calculate_score(user_cards)
+      computer_score = calculate_score(computer_cards)
+      # if > 21 or == 0, stop game
+      if user_score > 21 or user_score == 0:
+        print(f"Computer score is {computer_score}")
+        print(compare(user_score, computer_score))
+        stop = True
+        break     
+    #stop draw and computer draw turn if < 17  
+    elif draw == "n":
+      while computer_score < 17:
+        computer_cards.append(deal_card())
+        user_score = calculate_score(user_cards)
+        computer_score = calculate_score(computer_cards)
+      #stop the loop and print final scores
+      stop = True
+      print(f"Your cards: {user_cards}, final score {user_score} \nComputer's card: {computer_cards}, final score {computer_score}")
+      print(compare(user_score, computer_score))
+      
+"""starting game and asking user to restart game with while loop""" 
+play_game()
+while input(f"    Do you want to restart this game ? Type 'y' to restart, or 'n' to exit the game. ") == "y":
+  clear()
+  play_game()
+
+print("Good Bye")
+      
+
+
+
+
+
+
+  
 #Hint 10: If the game has not ended, ask the user if they want to draw another card. If yes, then use the deal_card() function to add another card to the user_cards List. If no, then the game has ended.
 
 #Hint 11: The score will need to be rechecked with every new card drawn and the checks in Hint 9 need to be repeated until the game ends.
